@@ -96,14 +96,16 @@ function handlePaddleCollision() {
         }
         return false;
     }
-    // if we're past the left paddle
-    if (ball.left <= leftPaddle.left + leftPaddle.width()) {
-        if (withinVerticalBounds(leftPaddle)) {
-            ball.xSpeed *= -1;
-        }
+    // if the left edge of the ball is in the horizontal plane of the left paddle
+    if (ball.left <= leftPaddle.left + leftPaddle.width()
+        && ball.left >= leftPaddle.left) {
+            if (withinVerticalBounds(leftPaddle)) {
+                ball.xSpeed *= -1;
+            }
     }
-    // if we're past the right paddle
-    else if (ball.left + ball.width() > rightPaddle.left) {
+    // if the right edge of the ball is in the horizontal plane of the right paddle
+    else if (ball.left + ball.width() > rightPaddle.left
+        && ball.left + ball.width() < rightPaddle.left + rightPaddle.width()) {
         if (withinVerticalBounds(rightPaddle)) {
             ball.xSpeed *= -1;
         }
