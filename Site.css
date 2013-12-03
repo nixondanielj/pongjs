@@ -26,12 +26,13 @@
 
 .board div{
     position: absolute;
-    color:green;
+    background-color:green;
 }
 
 .ball {
     height:10px;
     width:10px;
+    border-radius:100%;
 }
 
 .paddle {
