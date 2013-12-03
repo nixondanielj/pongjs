@@ -65,10 +65,16 @@ function setupInput() {
     $(document).keydown(function (e) {
         switch (e.which) {
             case 38: //up
-                leftPaddle.ySpeed = -5;
+                rightPaddle.ySpeed = -5;
                 break;
             case 40: //down
+                rightPaddle.ySpeed = 5;
+                break;
+            case 83:
                 leftPaddle.ySpeed = 5;
+                break;
+            case 87:
+                leftPaddle.ySpeed = -5;
                 break;
         }
     });
@@ -76,6 +82,10 @@ function setupInput() {
         switch (e.which) {
             case 40:
             case 38:
+                rightPaddle.ySpeed = 0;
+                break;
+            case 83: // s
+            case 87: //w
                 leftPaddle.ySpeed = 0;
                 break;
         }
