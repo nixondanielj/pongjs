@@ -21,6 +21,8 @@ function initialize() {
     ball = $('.ball');
     leftPaddle = $('.left');
     rightPaddle = $('.right');
+    leftPaddle.score = 0;
+    rightPaddle.score = 0;
     board = $('.board');
     setSizes();
     setupInput();
@@ -60,6 +62,8 @@ function draw() {
         p.css('top', p.top + 'px');
         p.css('left', p.left + 'px');
     });
+    $('.leftScore').html(leftPaddle.score);
+    $('.rightScore').html(rightPaddle.score);
 }
 
 function handleCollisions() {
@@ -68,6 +72,17 @@ function handleCollisions() {
     }
     doToPaddles(limitVertically);
     handlePaddleCollision();
+    handleScore();
+}
+
+function handleScore() {
+    if (ball.left < 0) {
+        rightPaddle.score++;
+        restartGame();
+    } else if (ball.left + ball.width() > board.width()) {
+        leftPaddle.score++;
+        restartGame();
+    }
 }
 
 function handlePaddleCollision() {
@@ -143,6 +158,9 @@ function restartGame() {
         p.xSpeed = 0;
     });
     randomizeVelocity(ball);
+    if (gameState.paused) {
+        gameState.pauseToggle();
+    }
 }
 
 function resetPositions() {
@@ -156,12 +174,14 @@ function resetPositions() {
 }
 
 function randomizeVelocity(item, min, max) {
-    item.ySpeed = random((min || -5), (max || 5));
-    item.xSpeed = random((min || -5), (max || 5));
+    item.ySpeed = random(max || 5, min || -5);
+    item.xSpeed = random(max || 5, min || -5);
 }
 
-function random(min, max) {
-    return Math.random() * (max || 1) + (min || 0);
+function random(max, min) {
+    var rn = Math.random();
+    var diff = Math.abs(max - min);
+    return min + (rn * diff);
 }
 
 function doToPaddles(f) {
