@@ -81,11 +81,17 @@ function handleCollisions() {
 
 function handleScore() {
     if (ball.left < 0) {
-        rightPaddle.score++;
         restartGame();
+        if (++rightPaddle.score > 10) {
+            gameState.pauseToggle();
+            message.html('RIGHT WINS!');
+        }
     } else if (ball.left + ball.width() > board.width()) {
-        leftPaddle.score++;
         restartGame();
+        if (++leftPaddle.score > 10) {
+            gameState.pauseToggle();
+            message.html("LEFT WINS!");
+        }
     }
 }
 
@@ -104,14 +110,14 @@ function handlePaddleCollision() {
     if (ball.left <= leftPaddle.left + leftPaddle.width()
         && ball.left >= leftPaddle.left) {
             if (withinVerticalBounds(leftPaddle)) {
-                ball.xSpeed *= -1;
+                ball.xSpeed *= -1.01;
             }
     }
     // if the right edge of the ball is in the horizontal plane of the right paddle
     else if (ball.left + ball.width() > rightPaddle.left
         && ball.left + ball.width() < rightPaddle.left + rightPaddle.width()) {
         if (withinVerticalBounds(rightPaddle)) {
-            ball.xSpeed *= -1;
+            ball.xSpeed *= -1.01;
         }
     }
 }
