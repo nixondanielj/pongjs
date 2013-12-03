@@ -50,6 +50,7 @@ function update() {
     doToPaddles(function (p) {
         p.top += p.ySpeed;
     });
+    handleCollisions();
 }
 
 function draw() {
@@ -59,6 +60,49 @@ function draw() {
         p.css('top', p.top + 'px');
         p.css('left', p.left + 'px');
     });
+}
+
+function handleCollisions() {
+    if (limitVertically(ball)) {
+        ball.ySpeed = -ball.ySpeed;
+    }
+    doToPaddles(limitVertically);
+    handlePaddleCollision();
+}
+
+function handlePaddleCollision() {
+    var withinVerticalBounds = function (p) {
+        // if we're below the top of the paddle
+        if (ball.top + ball.height() >= p.top) {
+            // if we're above the bottom of the paddle
+            if (ball.top <= p.top + p.height()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // if we're past the left paddle
+    if (ball.left <= leftPaddle.left + leftPaddle.width()) {
+        if (withinVerticalBounds(leftPaddle)) {
+            ball.xSpeed *= -1;
+        }
+    }
+    // if we're past the right paddle
+    else if (ball.left + ball.width() > rightPaddle.left) {
+        if (withinVerticalBounds(rightPaddle)) {
+            ball.xSpeed *= -1;
+        }
+    }
+}
+
+function limitVertically(item) {
+    if (item.top < 0) {
+        item.top = 0;
+        return true;
+    } else if (item.top > board.height() - item.height()) {
+        item.top = board.height() - item.height();
+        return true;
+    }
 }
 
 function setupInput() {
