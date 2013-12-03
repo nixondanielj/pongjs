@@ -1,12 +1,15 @@
-﻿var ball, leftPaddle, rightPaddle, board;
+﻿var ball, leftPaddle, rightPaddle, board, message;
 var DEFAULT_BALL_SPEED = 5;
 var DEFAULT_PADDLE_SPEED = 5;
 
 var gameState = {
     pauseToggle: function () {
+        message.toggle();
         gameState.paused = !gameState.paused;
         if (!gameState.paused) {
             gameLoop();
+        } else {
+            message.html("PAUSED");
         }
     },
     paused: false
@@ -24,6 +27,7 @@ function initialize() {
     leftPaddle.score = 0;
     rightPaddle.score = 0;
     board = $('.board');
+    message = $('.message');
     setSizes();
     setupInput();
     restartGame();
@@ -136,6 +140,9 @@ function setupInput() {
                 break;
             case 87:
                 leftPaddle.ySpeed = -5;
+                break;
+            case 80:
+                gameState.pauseToggle();
                 break;
         }
     });
