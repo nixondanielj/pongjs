@@ -4,16 +4,17 @@ var DEFAULT_PADDLE_SPEED = 5;
 
 var gameState = {
     pauseToggle: function () {
-        if (gameState.paused) {
+        gameState.paused = !gameState.paused;
+        if (!gameState.paused) {
             gameLoop();
         }
-        gameState.paused = !gameState.paused;
     },
     paused: false
 };
 
 $(document).ready(function () {
     initialize();
+    gameLoop();
 });
 
 function initialize() {
@@ -83,6 +84,10 @@ function setupInput() {
 
 function restartGame() {
     resetPositions();
+    doToPaddles(function (p) {
+        p.ySpeed = 0;
+        p.xSpeed = 0;
+    });
     randomizeVelocity(ball);
 }
 
